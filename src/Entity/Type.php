@@ -7,9 +7,15 @@ use App\Repository\TypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
 
 #[ORM\Entity(repositoryClass: TypeRepository::class)]
-#[ApiResource]
+#[ApiResource(operations: [
+        new Get(),
+        new Post()
+    ]
+)]
 class Type
 {
     #[ORM\Id]
@@ -20,8 +26,6 @@ class Type
     #[ORM\Column(length: 30)]
     private ?string $type = null;
 
-    #[ORM\Column]
-    private ?int $color = null;
 
     #[ORM\ManyToMany(targetEntity: Pokemon::class, inversedBy: 'types')]
     private Collection $pokemon;
@@ -48,17 +52,7 @@ class Type
         return $this;
     }
 
-    public function getColor(): ?int
-    {
-        return $this->color;
-    }
-
-    public function setColor(int $color): self
-    {
-        $this->color = $color;
-
-        return $this;
-    }
+   
 
     /**
      * @return Collection<int, Pokemon>
